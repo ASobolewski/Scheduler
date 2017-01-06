@@ -26,7 +26,7 @@ public class Algorithm {
         Data.setSchedule(bestSchedule);
     }
     
-    public Schedule crossover(Schedule sch1, Schedule sch2){
+    public static Schedule crossover(Schedule sch1, Schedule sch2){
     	Schedule child = new Schedule();
     	Random rand = new Random();
     	int crossoverBegin =  rand.nextInt(Data.getHours() - sch1.getCrossoverSize());
@@ -78,4 +78,5 @@ public class Algorithm {
     public static Schedule getBestSchedule(){
         return bestSchedule;
     }
+    
 }

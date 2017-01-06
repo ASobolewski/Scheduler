@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import scheduler.MainApp;
+import scheduler.model.Algorithm;
 import scheduler.model.Course;
 import scheduler.model.Data;
 import scheduler.model.Group;
@@ -146,8 +147,10 @@ public class SchedulerController implements Initializable {
     @FXML
     private ChoiceBox<String> groupChoiceBox2;
             
-    
-    
+    @FXML
+    private void handleButton(){
+       ;
+    }
     private MainApp mainApp;
     
     public SchedulerController(){

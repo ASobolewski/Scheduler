@@ -120,6 +120,7 @@ public class Schedule {
 	        }
     	}
     }
+    
     public void mutation(Lesson l, Random rand){
     	do{
 			Room myRoom = Data.getRooms().get(rand.nextInt(Data.getRooms().size()));
@@ -129,6 +130,7 @@ public class Schedule {
 			}
 		} while(true);
     }
+    
     public Lesson[][][] getSchedule(){
         return schedule;
     }
