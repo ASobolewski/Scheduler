@@ -168,10 +168,6 @@
                                  <font>
                                     <Font size="9.0" />
                                  </font></Label>
-                              <Label fx:id="mondayLabel1" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="43.0" prefWidth="125.0" text="Label" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                                 <font>
-                                    <Font size="9.0" />
-                                 </font></Label>
                               <Label fx:id="mondayLabel2" alignment="TOP_LEFT" contentDisplay="CENTER" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                  <font>
                                     <Font size="9.0" />
@@ -304,6 +300,11 @@
                                  <font>
                                     <Font size="9.0" />
                                  </font></Label>
+                              <Label fx:id="mondayLabel1" alignment="TOP_LEFT" contentDisplay="CENTER" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </GridPane>
                         <ChoiceBox fx:id="groupChoiceBox2" layoutX="225.0" layoutY="14.0" prefWidth="150.0" />
