@@ -11,6 +11,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -146,10 +147,16 @@ public class SchedulerController implements Initializable {
     private Label fridayLabel6;
     @FXML
     private ChoiceBox<String> groupChoiceBox2;
-            
+    
+    @FXML
+    private Button button;
+    
     @FXML
     private void handleButton(){
-       ;
+    	
+    	Algorithm.getSchedules().get(0).mutation();
+   // 	Algorithm.crossover(Algorithm.getSchedules().get(0), Algorithm.getSchedules().get(0));
+setLabels(Integer.parseInt(groupChoiceBox2.getValue()) - 1);
     }
     private MainApp mainApp;
     
@@ -184,7 +191,6 @@ public class SchedulerController implements Initializable {
         roomSizeColumn.setCellValueFactory(cellData -> cellData.getValue().getSize().asObject());
         
         groupChoiceBox.getItems().addAll(Data.getGroupList());
-        
         groupChoiceBox2.getItems().addAll(Data.getGroupList());
         groupChoiceBox2.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
             @Override
@@ -192,6 +198,11 @@ public class SchedulerController implements Initializable {
                 setLabels(newValue.intValue());
             }
         });
+        
+        button.setOnAction((event)->{
+            handleButton();
+        });
+        
     }    
     
     public void setMainApp(MainApp mainApp) {
@@ -207,162 +218,162 @@ public class SchedulerController implements Initializable {
     //nie pytajcie
     public void setLabels(int group){
         if(Data.getSchedule().getIsUsed()[0][0][group])
-            mondayLabel1.setText(Data.getSchedule().getSchedule()[0][0][group].getLesson());
+            mondayLabel1.setText(Algorithm.getSchedules().get(0).getSchedule()[0][0][group].getLesson());
         else
             mondayLabel1.setText("none");
         
         if(Data.getSchedule().getIsUsed()[0][1][group])
-            mondayLabel2.setText(Data.getSchedule().getSchedule()[0][1][group].getLesson());
+            mondayLabel2.setText(Algorithm.getSchedules().get(0).getSchedule()[0][1][group].getLesson());
         else
             mondayLabel2.setText("none");
         
         if(Data.getSchedule().getIsUsed()[0][2][group])
-            mondayLabel3.setText(Data.getSchedule().getSchedule()[0][2][group].getLesson());
+            mondayLabel3.setText(Algorithm.getSchedules().get(0).getSchedule()[0][2][group].getLesson());
         else
             mondayLabel3.setText("none");
         
         if(Data.getSchedule().getIsUsed()[0][3][group])
-            mondayLabel4.setText(Data.getSchedule().getSchedule()[0][3][group].getLesson());
+            mondayLabel4.setText(Algorithm.getSchedules().get(0).getSchedule()[0][3][group].getLesson());
         else
             mondayLabel4.setText("none");
         
         if(Data.getSchedule().getIsUsed()[0][4][group])
-            mondayLabel5.setText(Data.getSchedule().getSchedule()[0][4][group].getLesson());
+            mondayLabel5.setText(Algorithm.getSchedules().get(0).getSchedule()[0][4][group].getLesson());
         else
             mondayLabel5.setText("none");
         
         if(Data.getSchedule().getIsUsed()[0][5][group])
-            mondayLabel6.setText(Data.getSchedule().getSchedule()[0][5][group].getLesson());
+            mondayLabel6.setText(Algorithm.getSchedules().get(0).getSchedule()[0][5][group].getLesson());
         else
             mondayLabel6.setText("none");
         
         
         
         if(Data.getSchedule().getIsUsed()[1][0][group])
-            tuesdayLabel1.setText(Data.getSchedule().getSchedule()[1][0][group].getLesson());
+            tuesdayLabel1.setText(Algorithm.getSchedules().get(0).getSchedule()[1][0][group].getLesson());
         else
            tuesdayLabel1.setText("none");
         
         if(Data.getSchedule().getIsUsed()[1][1][group])
-        tuesdayLabel2.setText(Data.getSchedule().getSchedule()[1][1][group].getLesson());
+        tuesdayLabel2.setText(Algorithm.getSchedules().get(0).getSchedule()[1][1][group].getLesson());
         else
            tuesdayLabel2.setText("none");
         
         if(Data.getSchedule().getIsUsed()[1][2][group])
-        tuesdayLabel3.setText(Data.getSchedule().getSchedule()[1][2][group].getLesson());
+        tuesdayLabel3.setText(Algorithm.getSchedules().get(0).getSchedule()[1][2][group].getLesson());
         else
            tuesdayLabel3.setText("none");
         
         if(Data.getSchedule().getIsUsed()[1][3][group])
-        tuesdayLabel4.setText(Data.getSchedule().getSchedule()[1][3][group].getLesson());
+        tuesdayLabel4.setText(Algorithm.getSchedules().get(0).getSchedule()[1][3][group].getLesson());
         else
            tuesdayLabel4.setText("none");
         
         if(Data.getSchedule().getIsUsed()[1][4][group])
-        tuesdayLabel5.setText(Data.getSchedule().getSchedule()[1][4][group].getLesson());
+        tuesdayLabel5.setText(Algorithm.getSchedules().get(0).getSchedule()[1][4][group].getLesson());
         else
            tuesdayLabel5.setText("none");
         
         if(Data.getSchedule().getIsUsed()[1][5][group])
-        tuesdayLabel6.setText(Data.getSchedule().getSchedule()[1][5][group].getLesson());
+        tuesdayLabel6.setText(Algorithm.getSchedules().get(0).getSchedule()[1][5][group].getLesson());
         else
            tuesdayLabel6.setText("none");
         
         
         
         if(Data.getSchedule().getIsUsed()[2][0][group])
-            wenesdayLabel1.setText(Data.getSchedule().getSchedule()[2][0][group].getLesson());
+            wenesdayLabel1.setText(Algorithm.getSchedules().get(0).getSchedule()[2][0][group].getLesson());
         else
             wenesdayLabel1.setText("none");
         
         if(Data.getSchedule().getIsUsed()[2][1][group])
-            wenesdayLabel2.setText(Data.getSchedule().getSchedule()[2][1][group].getLesson());
+            wenesdayLabel2.setText(Algorithm.getSchedules().get(0).getSchedule()[2][1][group].getLesson());
         else
             wenesdayLabel2.setText("none");
         
         if(Data.getSchedule().getIsUsed()[2][2][group])
-            wenesdayLabel3.setText(Data.getSchedule().getSchedule()[2][2][group].getLesson());
+            wenesdayLabel3.setText(Algorithm.getSchedules().get(0).getSchedule()[2][2][group].getLesson());
         else
             wenesdayLabel3.setText("none");
         
         if(Data.getSchedule().getIsUsed()[2][3][group])
-            wenesdayLabel4.setText(Data.getSchedule().getSchedule()[2][3][group].getLesson());
+            wenesdayLabel4.setText(Algorithm.getSchedules().get(0).getSchedule()[2][3][group].getLesson());
         else
             wenesdayLabel4.setText("none");
         
         if(Data.getSchedule().getIsUsed()[2][4][group])
-            wenesdayLabel5.setText(Data.getSchedule().getSchedule()[2][4][group].getLesson());
+            wenesdayLabel5.setText(Algorithm.getSchedules().get(0).getSchedule()[2][4][group].getLesson());
         else
             wenesdayLabel5.setText("none");
         
         if(Data.getSchedule().getIsUsed()[2][5][group])
-            wenesdayLabel6.setText(Data.getSchedule().getSchedule()[2][5][group].getLesson());
+            wenesdayLabel6.setText(Algorithm.getSchedules().get(0).getSchedule()[2][5][group].getLesson());
         else
             wenesdayLabel6.setText("none");
         
         
         
         if(Data.getSchedule().getIsUsed()[3][0][group])
-            thursdayLabel1.setText(Data.getSchedule().getSchedule()[3][0][group].getLesson());
+            thursdayLabel1.setText(Algorithm.getSchedules().get(0).getSchedule()[3][0][group].getLesson());
         else
             thursdayLabel1.setText("none");
         
         if(Data.getSchedule().getIsUsed()[3][1][group])
-            thursdayLabel2.setText(Data.getSchedule().getSchedule()[3][1][group].getLesson());
+            thursdayLabel2.setText(Algorithm.getSchedules().get(0).getSchedule()[3][1][group].getLesson());
         else
             thursdayLabel2.setText("none");
         
         if(Data.getSchedule().getIsUsed()[3][2][group])
-            thursdayLabel3.setText(Data.getSchedule().getSchedule()[3][2][group].getLesson());
+            thursdayLabel3.setText(Algorithm.getSchedules().get(0).getSchedule()[3][2][group].getLesson());
         else
             thursdayLabel3.setText("none");
         
         if(Data.getSchedule().getIsUsed()[3][3][group])
-            thursdayLabel4.setText(Data.getSchedule().getSchedule()[3][3][group].getLesson());
+            thursdayLabel4.setText(Algorithm.getSchedules().get(0).getSchedule()[3][3][group].getLesson());
         else
             thursdayLabel4.setText("none");
         
         if(Data.getSchedule().getIsUsed()[3][4][group])
-            thursdayLabel5.setText(Data.getSchedule().getSchedule()[3][4][group].getLesson());
+            thursdayLabel5.setText(Algorithm.getSchedules().get(0).getSchedule()[3][4][group].getLesson());
         else
             thursdayLabel5.setText("none");
         
         if(Data.getSchedule().getIsUsed()[3][5][group])
-            thursdayLabel6.setText(Data.getSchedule().getSchedule()[3][5][group].getLesson());
+            thursdayLabel6.setText(Algorithm.getSchedules().get(0).getSchedule()[3][5][group].getLesson());
         else
             thursdayLabel6.setText("none");
         
         
         
         if(Data.getSchedule().getIsUsed()[4][0][group])
-            fridayLabel1.setText(Data.getSchedule().getSchedule()[4][0][group].getLesson());
+            fridayLabel1.setText(Algorithm.getSchedules().get(0).getSchedule()[4][0][group].getLesson());
         else
             fridayLabel1.setText("none");
         
         if(Data.getSchedule().getIsUsed()[4][1][group])
-            fridayLabel2.setText(Data.getSchedule().getSchedule()[4][1][group].getLesson());
+            fridayLabel2.setText(Algorithm.getSchedules().get(0).getSchedule()[4][1][group].getLesson());
         else
             fridayLabel2.setText("none");
         
         if(Data.getSchedule().getIsUsed()[4][2][group])
-            fridayLabel3.setText(Data.getSchedule().getSchedule()[4][2][group].getLesson());
+            fridayLabel3.setText(Algorithm.getSchedules().get(0).getSchedule()[4][2][group].getLesson());
         else
             fridayLabel3.setText("none");
         
         if(Data.getSchedule().getIsUsed()[4][3][group])
-            fridayLabel4.setText(Data.getSchedule().getSchedule()[4][3][group].getLesson());
+            fridayLabel4.setText(Algorithm.getSchedules().get(0).getSchedule()[4][3][group].getLesson());
         else
             fridayLabel4.setText("none");
         
         if(Data.getSchedule().getIsUsed()[4][4][group])
-            fridayLabel5.setText(Data.getSchedule().getSchedule()[4][4][group].getLesson());
+            fridayLabel5.setText(Algorithm.getSchedules().get(0).getSchedule()[4][4][group].getLesson());
         else
             fridayLabel5.setText("none");
         
         if(Data.getSchedule().getIsUsed()[4][5][group])
-            fridayLabel6.setText(Data.getSchedule().getSchedule()[4][5][group].getLesson());
+            fridayLabel6.setText(Algorithm.getSchedules().get(0).getSchedule()[4][5][group].getLesson());
         else
             fridayLabel6.setText("none");
         
-    }
+}
 }

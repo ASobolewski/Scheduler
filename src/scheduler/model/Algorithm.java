@@ -16,16 +16,35 @@ import javafx.collections.ObservableList;
  */
 public class Algorithm {
     private static ObservableList<Schedule> Schedules = FXCollections.observableArrayList();
+    private static ObservableList<Schedule> Elite = FXCollections.observableArrayList();
     private static Schedule bestSchedule;
+    private static final int POPULATION = 1000;
     
     //testowalem czy dobrze generuje randomowy plan zajec i czy dobrze wyswietla, wiec TODO
     public static void start(){
+        /*int iterations = 0;
+    //inicjacja populacji poczatkowej
+        for(int i = 0; i < POPULATION; i++){
+            Schedules.add(new Schedule());
+            Schedules.get(0).generateSchedule();
+        }
+    //ocena populacji poczatkowej
+        calcFitness();
+        if(selectBest().getFitness() == 1)
+            return;
+        
+        while(getBestFitness() < 0.99) //dalem tyle, bo nie wiem czy te double sa wystarczajaco dokladne, zeby dac 1.0
+        {
+            
+        }
+        */
         Schedules.add(new Schedule());
         Schedules.get(0).generateSchedule();
         bestSchedule = Schedules.get(0);
         Data.setSchedule(bestSchedule);
     }
     
+
     public static Schedule crossover(Schedule sch1, Schedule sch2){
     	Schedule child = new Schedule();
     	Random rand = new Random();
@@ -71,6 +90,43 @@ public class Algorithm {
     	}
 	    return child;
     }
+    
+    private static void selection(){
+        calcFitness();
+        selectElite();
+    }
+    
+    private static void calcFitness(){
+        for(Schedule s : Schedules){
+            s.calcFitness();
+            s.calcSoftReqValue();
+        }
+    }
+    
+    private static void selectElite(){
+        Elite.clear();
+        for(int i = 0; i < Data.getSelectionParam(); i++){
+            Elite.add(selectBest());
+        }
+    }
+    
+    private static Schedule selectBest(){
+        Schedule best = new Schedule();
+        for(Schedule s : Schedules)
+        {
+            if(best.getFitness() < s.getFitness())
+                best = s;
+            if(best.getFitness() == s.getFitness())
+                if(best.getSoftReqValue() < s.getSoftReqValue())
+                    best = s;
+        }
+        return best;
+    }
+    
+    private static double getBestFitness(){
+        return selectBest().getFitness();
+    }
+    
     public static ObservableList<Schedule> getSchedules(){
         return Schedules;
     }

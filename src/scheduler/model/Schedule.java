@@ -12,20 +12,24 @@ import java.util.Random;
  * @author adrian
  */
 public class Schedule {
-    private Lesson[][][] schedule;
-    private boolean[][][] isUsed;
+    private final Lesson[][][] schedule;
+    private final boolean[][][] isUsed;
     private double fitness;
-    private int mutationSize;
-    private int crossoverSize;
-    private int mutationProbability;
-    private int crossoverProbability;
+    private int softRequirementsValue;
+    private final int mutationSize;
+    private final int crossoverSize;
+    private final int mutationProbability;
+    private final int crossoverProbability;
+    
     public Schedule(){
         this.schedule = new Lesson[Data.getDays()][Data.getHours()][Data.getGroupCount()];
         this.isUsed = new boolean[Data.getDays()][Data.getHours()][Data.getGroupCount()];
-        this.mutationSize = 10;
+        this.mutationSize = 5000;
         this.crossoverSize = 3;
-        this.mutationProbability = 20;
+        this.mutationProbability = 99;
         this.crossoverProbability = 20;
+        this.fitness = 0;
+        this.softRequirementsValue = 0;
     }
     
     public void generateSchedule(){
@@ -42,7 +46,7 @@ public class Schedule {
         }
     }
     
-    private void calcFitness(){
+    public void calcFitness(){
         int fitness = 0;
         for(int i = 0; i < Data.getDays(); i++)
             for(int j = 0; j < Data.getHours(); j++){
@@ -51,6 +55,34 @@ public class Schedule {
                 fitness += checkRoomSize(i, j);
             }
         this.fitness = fitness / (Data.getDays() * Data.getHours() * 3);
+    }
+    
+    public void calcSoftReqValue(){
+        int value = 0;
+        value += calcSoftStudentsReq();
+        value+= calcSoftEveningReq();
+        this.softRequirementsValue = value;     
+    }
+    
+    //Grupy studenckie chcialyby konczyc w piatki  najpozniej o 14
+    private int calcSoftStudentsReq(){
+        int value = 0;
+        for(int i = 0; i < Data.getGroupCount(); i++)
+            if(schedule[4][3][i] == null)
+                if(schedule[4][4][i] == null)
+                    if(schedule[4][5][i] == null)
+                        value++;
+        return value;
+    }
+    
+    //Zajecia najpozniej do godziny 18
+    private int calcSoftEveningReq(){
+        int value = 0;
+        for(int i = 0; i < Data.getGroupCount(); i++)
+            for(int j = 0; j < Data.getDays(); j++)
+                if(schedule[j][5][i] == null)
+                    value++;
+        return value;
     }
     
     private int checkProfessorAvailability(int day, int hour){
@@ -96,6 +128,10 @@ public class Schedule {
     public double getFitness(){
         return fitness;
     }
+    
+    public int getSoftReqValue(){
+        return softRequirementsValue;
+    }
         
     public void mutation(){
     	Random rand = new Random();   
@@ -106,16 +142,22 @@ public class Schedule {
 	        	int c = rand.nextInt(Data.getDays());
 	        	int d = rand.nextInt(Data.getHours());
 	        	int k = rand.nextInt(Data.getGroupCount());
-	        	if(isUsed[a][b][k] == true && isUsed[c][d][k] == true){
+	        	if(isUsed[a][b][k] == true || isUsed[c][d][k] == true){
 		        	Lesson tmp = schedule[a][b][k];
 		        	schedule[a][b][k] = schedule[c][d][k];
 		        	schedule[c][d][k] = tmp;
 		        	if(schedule[c][d][k] != null){
 		        		mutation(schedule[c][d][k], rand);
+		        		isUsed[c][d][k] = true;
 		        	}
+		        	else
+		        		isUsed[c][d][k] = false;
 		        	if(schedule[a][b][k] != null){
 		        		mutation(schedule[a][b][k], rand);
+		        		isUsed[a][b][k] = true;
 		        	}
+		        	else
+		        		isUsed[a][b][k] = false;
 	        	}   
 	        }
     	}
@@ -129,7 +171,7 @@ public class Schedule {
 				break;
 			}
 		} while(true);
-    }
+}
     
     public Lesson[][][] getSchedule(){
         return schedule;
