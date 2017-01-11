@@ -50,11 +50,17 @@ public class Schedule {
         int fitness = 0;
         for(int i = 0; i < Data.getDays(); i++)
             for(int j = 0; j < Data.getHours(); j++){
+                //System.out.println("i = "+i+" j = "+j);
                 fitness += checkProfessorAvailability(i, j);
+               // System.out.println("checkProfessor() fitness = "+fitness);
                 fitness += checkRoomAvailability(i, j);
+                //System.out.println("checkRoom() fitness =" + fitness);
                 fitness += checkRoomSize(i, j);
+                //System.out.println("checkRoomSize() fitness =" + fitness);
             }
-        this.fitness = fitness / (Data.getDays() * Data.getHours() * 3);
+        //System.out.println(Data.getDays() * Data.getHours() * Data.getGroupCount() * 3 );
+        this.fitness = (double)fitness / (Data.getDays() * Data.getHours() * Data.getGroupCount() * 3 );
+        //System.out.println("this.fitness = "+this.fitness+" fitness = "+fitness);
     }
     
     public void calcSoftReqValue(){
@@ -97,6 +103,7 @@ public class Schedule {
                 fitness -= check;
             check = 0;
         }
+        //System.out.println("Professor fitness = "+fitness);
         return fitness;
     }
     

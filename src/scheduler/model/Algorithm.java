@@ -16,8 +16,8 @@ public class Algorithm {
     private static ArrayList<Schedule> Schedules;
     private static ArrayList<Schedule> Elite;
     private static Schedule bestSchedule;
-    private static final int MI = 1000;
-    private static final int LAMBDA = 500;
+    private static final int MI = 10;
+    private static final int LAMBDA = 5;
     private static double totalFitness;
     
 
@@ -26,30 +26,34 @@ public class Algorithm {
         ArrayList<Schedule> tempSchedules;
         ArrayList<Schedule> offspring;
         Schedules = new ArrayList<>();
-        System.out.println(iterations);
+        Elite = new ArrayList<>();
+        //System.out.println(iterations);
     //inicjacja populacji poczatkowej
         for(int i = 0; i < MI; i++){
             Schedule s = new Schedule();
             s.generateSchedule();
             Schedules.add(s);
         }
-        System.out.println(iterations);
+        //System.out.println(iterations);
     //ocena populacji poczatkowej
         calcFitness(Schedules);
         System.out.println(iterations);
         while(getBestFitness() < 0.99) //dalem tyle, bo nie wiem czy te double sa wystarczajaco dokladne, zeby dac 1.0
         {
+            //System.out.println("while");
             iterations++;
+            
             tempSchedules = reproduction();
             tempSchedules = crossover(tempSchedules);
             offspring = mutation(tempSchedules);
             selection(offspring);
             Schedules = Elite;
+            System.out.println(bestSchedule.getFitness());
             System.out.println(iterations);
         }
         
-        /*Data.setSchedule(selectBest());
-        Schedules.add(new Schedule());
+        Data.setSchedule(selectBest(Schedules));
+        /*Schedules.add(new Schedule());
         Schedules.get(0).generateSchedule();
         Schedules.add(new Schedule());
         Schedules.get(1).generateSchedule();
@@ -179,6 +183,7 @@ public class Algorithm {
     
     private static void selectElite(ArrayList<Schedule> sList){
         Elite.clear();
+        bestSchedule = selectBest(sList);
         for(int i = 0; i < Data.getSelectionParam(); i++){
             Elite.add(selectBest(sList));
         }
@@ -186,6 +191,7 @@ public class Algorithm {
     
     private static Schedule selectBest(ArrayList<Schedule> sList){
         Schedule best = new Schedule();
+        
         for(Schedule s : sList)
         {
             if(best.getFitness() < s.getFitness())
@@ -194,6 +200,7 @@ public class Algorithm {
                 if(best.getSoftReqValue() < s.getSoftReqValue())
                     best = s;
         }
+        //System.out.println("fitness = "+best.getFitness());
         return best;
     }
     
