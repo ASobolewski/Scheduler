@@ -90,7 +90,7 @@ public class Schedule {
         int check = 0;
         for(Professor professor : Data.getProfessors()){
             for(int group = 0; group < Data.getGroupCount(); group++){
-                if(professor == schedule[day][hour][group].getProfessor())
+                if(getIsUsed()[day][hour][group] && professor == schedule[day][hour][group].getProfessor())
                     check++;
             }
             if(check > 1)
@@ -105,7 +105,7 @@ public class Schedule {
         int check = 0;
         for(Room room : Data.getRooms()){
             for(int group = 0; group < Data.getGroupCount(); group++){
-                if(room == schedule[day][hour][group].getRoom())
+                if(getIsUsed()[day][hour][group] && room == schedule[day][hour][group].getRoom())
                     check++;
             }
             if(check > 1)
@@ -119,7 +119,7 @@ public class Schedule {
         int fitness = Data.getGroupCount();
         int check = 0;
         for(int group = 0; group < Data.getGroupCount(); group++){
-            if(schedule[day][hour][group].getGroup().getSize().get() < schedule[day][hour][group].getRoom().getSize().get())
+            if(getIsUsed()[day][hour][group] && schedule[day][hour][group].getGroup().getSize().get() < schedule[day][hour][group].getRoom().getSize().get())
                 fitness--;
             }
         return fitness;

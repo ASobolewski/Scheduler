@@ -29,7 +29,7 @@ public class MainApp extends Application {
     
     public MainApp(){
         Data.initData();
-        algorithm.start();
+        //algorithm.start();
     }
     
     @Override

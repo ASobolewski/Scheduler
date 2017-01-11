@@ -154,9 +154,7 @@ public class SchedulerController implements Initializable {
     @FXML
     private void handleButton(){
     	
-    	Algorithm.getSchedules().get(0).mutation();
-   // 	Algorithm.crossover(Algorithm.getSchedules().get(0), Algorithm.getSchedules().get(0));
-setLabels(Integer.parseInt(groupChoiceBox2.getValue()) - 1);
+    	Algorithm.start();
     }
     private MainApp mainApp;
     

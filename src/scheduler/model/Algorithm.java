@@ -7,8 +7,6 @@ package scheduler.model;
 
 import java.util.ArrayList;
 import java.util.Random;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 /**
  *
@@ -27,40 +25,51 @@ public class Algorithm {
         int iterations = 0;
         ArrayList<Schedule> tempSchedules;
         ArrayList<Schedule> offspring;
+        Schedules = new ArrayList<>();
+        System.out.println(iterations);
     //inicjacja populacji poczatkowej
         for(int i = 0; i < MI; i++){
             Schedule s = new Schedule();
             s.generateSchedule();
             Schedules.add(s);
         }
+        System.out.println(iterations);
     //ocena populacji poczatkowej
-        calcFitness();
-        
+        calcFitness(Schedules);
+        System.out.println(iterations);
         while(getBestFitness() < 0.99) //dalem tyle, bo nie wiem czy te double sa wystarczajaco dokladne, zeby dac 1.0
         {
             iterations++;
             tempSchedules = reproduction();
-            crossover(tempSchedules);
-            mutation(tempSchedules);
+            tempSchedules = crossover(tempSchedules);
+            offspring = mutation(tempSchedules);
+            selection(offspring);
+            Schedules = Elite;
+            System.out.println(iterations);
         }
         
-        Data.setSchedule(selectBest());
+        /*Data.setSchedule(selectBest());
         Schedules.add(new Schedule());
         Schedules.get(0).generateSchedule();
         Schedules.add(new Schedule());
         Schedules.get(1).generateSchedule();
         bestSchedule = Schedules.get(0);
         Data.setSchedule(Schedules.get(0));
+*/
     }
     
-    /*public static void crossover(ArrayList<Schedule> sList){
-        double totalFitness = calcTotalFitness(sList);
-        for(Schedule s : sList){
-            
-        }
-    }*/
-    public static void mutation(ArrayList<Schedule> s){
-        ;
+    public static ArrayList<Schedule> crossover(ArrayList<Schedule> sList){
+        ArrayList<Schedule> crossovered = new ArrayList<>();
+        for(int i = 0; i < sList.size()-1; i++)
+            crossovered.add(crossover(sList.get(i), sList.get(i + 1)));
+        crossovered.add(crossover(sList.get(0), sList.get(sList.size() - 1)));
+        return crossovered;
+    }
+    
+    public static ArrayList<Schedule> mutation(ArrayList<Schedule> sList){
+        for(Schedule s : sList)
+            s.mutation();
+        return sList;
     }
     
     public static Schedule crossover(Schedule sch1, Schedule sch2){
@@ -142,9 +151,7 @@ public class Algorithm {
     			}
     		}	
     	}
-    	Schedules.set(0, child);
-    	Data.setSchedule(child);
-	    return child;
+	return child;
     }
     
     private static ArrayList<Schedule> reproduction(){
@@ -158,28 +165,28 @@ public class Algorithm {
         return tempSchedules;
     }
     
-    private static void selection(){
-        calcFitness();
-        selectElite();
+    private static void selection(ArrayList<Schedule> sList){
+        calcFitness(sList);
+        selectElite(sList);
     }
     
-    private static void calcFitness(){
-        for(Schedule s : Schedules){
+    private static void calcFitness(ArrayList<Schedule> sList){
+        for(Schedule s : sList){
             s.calcFitness();
             s.calcSoftReqValue();
         }
     }
     
-    private static void selectElite(){
+    private static void selectElite(ArrayList<Schedule> sList){
         Elite.clear();
         for(int i = 0; i < Data.getSelectionParam(); i++){
-            Elite.add(selectBest());
+            Elite.add(selectBest(sList));
         }
     }
     
-    private static Schedule selectBest(){
+    private static Schedule selectBest(ArrayList<Schedule> sList){
         Schedule best = new Schedule();
-        for(Schedule s : Schedules)
+        for(Schedule s : sList)
         {
             if(best.getFitness() < s.getFitness())
                 best = s;
@@ -191,7 +198,7 @@ public class Algorithm {
     }
     
     private static double getBestFitness(){
-        return selectBest().getFitness();
+        return selectBest(Schedules).getFitness();
     }
     
     private static void calcTotalFitness(){
