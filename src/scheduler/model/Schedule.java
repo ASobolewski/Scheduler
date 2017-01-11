@@ -40,7 +40,7 @@ public class Schedule {
             do{
                 day = rand.nextInt(Data.getDays());
                 hour = rand.nextInt(Data.getHours());
-            }while(isUsed[day][hour][lesson.getGroup().getId().get()]);
+            }while(isUsed[day][hour][lesson.getGroup().getId().get() - 1]);
             schedule[day][hour][lesson.getGroup().getId().get()-1] = lesson;
             isUsed[day][hour][lesson.getGroup().getId().get()-1] = true;
         }
@@ -184,5 +184,11 @@ public class Schedule {
     }
     public boolean[][][] getIsUsed(){
         return isUsed;
+    }
+    public boolean getUsedAt(int day, int hour, int group){
+    	return isUsed[day][hour][group];
+    }
+    public void setUsed(int day, int hour, int group, boolean value){
+    	isUsed[day][hour][group] = value;
     }
 }
