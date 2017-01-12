@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package scheduler.view;
 
 import java.net.URL;
@@ -68,22 +63,6 @@ public class SchedulerController implements Initializable {
     private TableColumn<Room, Integer> roomIdColumn;
     @FXML
     private TableColumn<Room, Integer> roomSizeColumn;
-    
-    @FXML
-    private ChoiceBox<String> groupChoiceBox;
-    
-    @FXML
-    private TableView<Lesson[]> lessonScheduleTable;
-    @FXML
-    private TableColumn<Lesson[], String> mondayColumn;
-    @FXML
-    private TableColumn<Lesson[], String> tuesdayColumn;
-    @FXML
-    private TableColumn<Lesson[], String> wenesdayColumn;
-    @FXML
-    private TableColumn<Lesson[], String> thursdayColumn;
-    @FXML
-    private TableColumn<Lesson[], String> fridayColumn;
     
     @FXML
     private Label mondayLabel1;
@@ -161,14 +140,8 @@ public class SchedulerController implements Initializable {
     public SchedulerController(){
     }
     
-    /**
-     * Initializes the controller class.
-     * @param url
-     * @param rb
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         courseIdColumn.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         courseNameColumn.setCellValueFactory(cellData -> cellData.getValue().getName());
         
@@ -188,7 +161,6 @@ public class SchedulerController implements Initializable {
         roomIdColumn.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
         roomSizeColumn.setCellValueFactory(cellData -> cellData.getValue().getSize().asObject());
         
-        groupChoiceBox.getItems().addAll(Data.getGroupList());
         groupChoiceBox2.getItems().addAll(Data.getGroupList());
         groupChoiceBox2.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
             @Override

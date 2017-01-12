@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package scheduler.model;
 
 import java.util.Arrays;
@@ -10,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import scheduler.util.filereadUtil;
 
-/**
- *
- * @author adrian
- */
+
 public class Data {
     private static final ObservableList<Lesson> Lessons  = FXCollections.observableArrayList();
     private static final ObservableList<Course> Courses = FXCollections.observableArrayList();
@@ -22,7 +14,7 @@ public class Data {
     private static final ObservableList<Room> Rooms = FXCollections.observableArrayList();
     private static Schedule schedule;
     private static int groupCount;
-    private static int selectionParameter;
+
     private static final int DAYS = 5;
     private static final int HOURS = 6; 
     
@@ -37,7 +29,6 @@ public class Data {
         filereadUtil.loadLessons(Lessons, Courses, Groups, Professors, Rooms);
         
         groupCount = filereadUtil.getGroupCount();
-        selectionParameter = groupCount/2;
     }
     
     public static ObservableList<Lesson> getLessons(){
@@ -72,10 +63,7 @@ public class Data {
         return HOURS;
     }
     
-    public static int getSelectionParam(){
-        return selectionParameter;
-    }
-    
+
     public static ObservableList<String> getGroupList(){
         ObservableList<String> groupList  = FXCollections.observableArrayList();
         for(int i = 1; i <= getGroupCount(); i++)
@@ -87,13 +75,6 @@ public class Data {
         Data.schedule = schedule;
     }
     
-    /*public static ObservableList<Lesson[]> getGroupSchedule(int group){
-        ObservableList<Lesson[]> groupSchedule = FXCollections.observableArrayList();
-        for(int day = 0; day < DAYS; day++)
-            for(int hour = 0; hour < HOURS; hour++)
-                groupSchedule.add(schedule.getGroupDaySchedule(day, group));
-        return groupSchedule;
-    }*/
     public static Schedule getSchedule(){
         return schedule;
     }

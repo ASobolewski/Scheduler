@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package scheduler.model;
 
 import java.util.Random;
 
-/**
- *
- * @author adrian
- */
 public class Schedule {
     private final Lesson[][][] schedule;
     private final boolean[][][] isUsed;
@@ -24,22 +15,39 @@ public class Schedule {
     public Schedule(){
         this.schedule = new Lesson[Data.getDays()][Data.getHours()][Data.getGroupCount()];
         this.isUsed = new boolean[Data.getDays()][Data.getHours()][Data.getGroupCount()];
-        this.mutationSize = 5000;
+        this.mutationSize = 50;
         this.crossoverSize = 3;
-        this.mutationProbability = 99;
+        this.mutationProbability = 20;
         this.crossoverProbability = 20;
         this.fitness = 0;
         this.softRequirementsValue = 0;
     }
     
     public void generateSchedule(){
-        int day;
+        /*int day;
         int hour;
         Random rand = new Random();
         for(Lesson lesson : Data.getLessons()){
             do{
                 day = rand.nextInt(Data.getDays());
                 hour = rand.nextInt(Data.getHours());
+            }while(isUsed[day][hour][lesson.getGroup().getId().get() - 1]);
+            schedule[day][hour][lesson.getGroup().getId().get()-1] = lesson;
+            isUsed[day][hour][lesson.getGroup().getId().get()-1] = true;
+        }*/
+        int day = 0;
+        int hour = 0;
+        for(Lesson lesson : Data.getLessons()){
+            day = 0;
+            hour = 0;
+            do{
+                if(hour < 5)
+                    hour++;
+                else{
+                    hour = 0;
+                    if(day < 4)
+                        day++;
+                }
             }while(isUsed[day][hour][lesson.getGroup().getId().get() - 1]);
             schedule[day][hour][lesson.getGroup().getId().get()-1] = lesson;
             isUsed[day][hour][lesson.getGroup().getId().get()-1] = true;
@@ -50,17 +58,14 @@ public class Schedule {
         int fitness = 0;
         for(int i = 0; i < Data.getDays(); i++)
             for(int j = 0; j < Data.getHours(); j++){
-                //System.out.println("i = "+i+" j = "+j);
-                fitness += checkProfessorAvailability(i, j);
-               // System.out.println("checkProfessor() fitness = "+fitness);
-                fitness += checkRoomAvailability(i, j);
-                //System.out.println("checkRoom() fitness =" + fitness);
-                fitness += checkRoomSize(i, j);
-                //System.out.println("checkRoomSize() fitness =" + fitness);
+                int professor = checkProfessorAvailability(i, j);
+                fitness += professor;
+                int room1 = checkRoomAvailability(i, j);
+                fitness += room1;
+                int room2 = checkRoomSize(i, j);
+                fitness += room2;
             }
-        //System.out.println(Data.getDays() * Data.getHours() * Data.getGroupCount() * 3 );
         this.fitness = (double)fitness / (Data.getDays() * Data.getHours() * Data.getGroupCount() * 3 );
-        //System.out.println("this.fitness = "+this.fitness+" fitness = "+fitness);
     }
     
     public void calcSoftReqValue(){
@@ -103,7 +108,6 @@ public class Schedule {
                 fitness -= check;
             check = 0;
         }
-        //System.out.println("Professor fitness = "+fitness);
         return fitness;
     }
     
@@ -125,10 +129,9 @@ public class Schedule {
     private int checkRoomSize(int day, int hour){
         int fitness = Data.getGroupCount();
         int check = 0;
-        for(int group = 0; group < Data.getGroupCount(); group++){
-            if(getIsUsed()[day][hour][group] && schedule[day][hour][group].getGroup().getSize().get() < schedule[day][hour][group].getRoom().getSize().get())
+        for(int group = 0; group < Data.getGroupCount(); group++)
+            if(getIsUsed()[day][hour][group] && (schedule[day][hour][group].getGroup().getSize().get() > schedule[day][hour][group].getRoom().getSize().get()))
                 fitness--;
-            }
         return fitness;
     }
 

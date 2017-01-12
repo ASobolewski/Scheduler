@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package scheduler.util;
 
 import java.io.BufferedReader;
@@ -17,10 +12,7 @@ import scheduler.model.Lesson;
 import scheduler.model.Professor;
 import scheduler.model.Room;
 
-/**
- *
- * @author adrian
- */
+
 public class filereadUtil {
     private static int groupCount;
     

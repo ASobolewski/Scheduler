@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package scheduler;
 
 import java.io.IOException;
@@ -17,10 +12,7 @@ import scheduler.model.Algorithm;
 import scheduler.model.Data;
 import scheduler.view.SchedulerController;
 
-/**
- *
- * @author adrian
- */
+
 public class MainApp extends Application {
     
     private Stage primaryStage;
@@ -29,7 +21,6 @@ public class MainApp extends Application {
     
     public MainApp(){
         Data.initData();
-        //algorithm.start();
     }
     
     @Override

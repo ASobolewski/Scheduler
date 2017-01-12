@@ -1,23 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package scheduler.model;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- *
- * @author adrian
- */
+
 public class Algorithm {
     private static ArrayList<Schedule> Schedules;
     private static ArrayList<Schedule> Elite;
     private static Schedule bestSchedule;
-    private static final int MI = 10;
-    private static final int LAMBDA = 5;
+    private static final int MI = 20;
+    private static final int LAMBDA = 10;
     private static double totalFitness;
     
 
@@ -27,39 +19,42 @@ public class Algorithm {
         ArrayList<Schedule> offspring;
         Schedules = new ArrayList<>();
         Elite = new ArrayList<>();
-        //System.out.println(iterations);
+        
     //inicjacja populacji poczatkowej
         for(int i = 0; i < MI; i++){
             Schedule s = new Schedule();
             s.generateSchedule();
             Schedules.add(s);
         }
-        //System.out.println(iterations);
+
     //ocena populacji poczatkowej
         calcFitness(Schedules);
-        System.out.println(iterations);
-        while(getBestFitness() < 0.99) //dalem tyle, bo nie wiem czy te double sa wystarczajaco dokladne, zeby dac 1.0
+
+        while(getBestFitness() < 0.99)
         {
-            //System.out.println("while");
-            iterations++;
-            
             tempSchedules = reproduction();
             tempSchedules = crossover(tempSchedules);
             offspring = mutation(tempSchedules);
             selection(offspring);
             Schedules = Elite;
+            iterations++;
+            
             System.out.println(bestSchedule.getFitness());
             System.out.println(iterations);
         }
         
         Data.setSchedule(selectBest(Schedules));
-        /*Schedules.add(new Schedule());
-        Schedules.get(0).generateSchedule();
-        Schedules.add(new Schedule());
-        Schedules.get(1).generateSchedule();
-        bestSchedule = Schedules.get(0);
-        Data.setSchedule(Schedules.get(0));
-*/
+    }
+    
+     private static ArrayList<Schedule> reproduction(){
+        ArrayList<Schedule> tempSchedules = new ArrayList<>();
+        calcTotalFitness();
+        while(tempSchedules.size() < MI){
+            for(Schedule s : Schedules)
+                if(new Random().nextDouble() <= s.getFitness()/totalFitness)
+                    tempSchedules.add(s);
+        }
+        return tempSchedules;
     }
     
     public static ArrayList<Schedule> crossover(ArrayList<Schedule> sList){
@@ -74,6 +69,11 @@ public class Algorithm {
         for(Schedule s : sList)
             s.mutation();
         return sList;
+    }
+    
+    private static void selection(ArrayList<Schedule> sList){
+        calcFitness(sList);
+        selectElite(sList);
     }
     
     public static Schedule crossover(Schedule sch1, Schedule sch2){
@@ -158,21 +158,6 @@ public class Algorithm {
 	return child;
     }
     
-    private static ArrayList<Schedule> reproduction(){
-        ArrayList<Schedule> tempSchedules = new ArrayList<>();
-        calcTotalFitness();
-        while(tempSchedules.size() < MI){
-            for(Schedule s : Schedules)
-                if(new Random().nextDouble() <= s.getFitness()/totalFitness)
-                    tempSchedules.add(s);
-        }
-        return tempSchedules;
-    }
-    
-    private static void selection(ArrayList<Schedule> sList){
-        calcFitness(sList);
-        selectElite(sList);
-    }
     
     private static void calcFitness(ArrayList<Schedule> sList){
         for(Schedule s : sList){
@@ -184,7 +169,7 @@ public class Algorithm {
     private static void selectElite(ArrayList<Schedule> sList){
         Elite.clear();
         bestSchedule = selectBest(sList);
-        for(int i = 0; i < Data.getSelectionParam(); i++){
+        for(int i = 0; i < LAMBDA; i++){
             Elite.add(selectBest(sList));
         }
     }
@@ -200,7 +185,6 @@ public class Algorithm {
                 if(best.getSoftReqValue() < s.getSoftReqValue())
                     best = s;
         }
-        //System.out.println("fitness = "+best.getFitness());
         return best;
     }
     

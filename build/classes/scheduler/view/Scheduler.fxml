@@ -123,26 +123,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Schedules">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView fx:id="lessonScheduleTable" layoutX="181.0" layoutY="55.0" prefHeight="312.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="55.0">
-                          <columns>
-                            <TableColumn fx:id="mondayColumn" prefWidth="120.0" text="Monday" />
-                            <TableColumn fx:id="tuesdayColumn" prefWidth="120.0" text="Tuesday" />
-                              <TableColumn fx:id="wenesdayColumn" prefWidth="120.0" text="Wenesday" />
-                              <TableColumn fx:id="thursdayColumn" prefWidth="120.0" text="Thursday" />
-                              <TableColumn fx:id="fridayColumn" prefWidth="120.0" text="Friday" />
-                          </columns>
-                        </TableView>
-                        <ChoiceBox fx:id="groupChoiceBox" layoutX="82.0" layoutY="13.0" prefWidth="150.0" AnchorPane.leftAnchor="65.0" AnchorPane.topAnchor="10.0" />
-                        <Label layoutX="34.0" layoutY="14.0" text="Group" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="15.0" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-            <Tab text="Test">
+            <Tab text="Schedule">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
