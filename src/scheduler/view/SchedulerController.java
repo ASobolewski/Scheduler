@@ -6,6 +6,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -132,9 +134,12 @@ public class SchedulerController implements Initializable {
     
     @FXML
     private void handleButton(){
-    	
-    	Algorithm.start();
+    	if(!Algorithm.start())
+            alert.showAndWait();;
     }
+    
+    Alert alert;
+            
     private MainApp mainApp;
     
     public SchedulerController(){
@@ -172,6 +177,11 @@ public class SchedulerController implements Initializable {
         button.setOnAction((event)->{
             handleButton();
         });
+        
+        alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("Nie mozna ulozyc planu zajec z podanymi danymi");
         
     }    
     
