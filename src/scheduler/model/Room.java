@@ -32,4 +32,5 @@ public class Room {
     public void setSize(IntegerProperty size){
         this.size = size;
     }
+    
 }

@@ -12,7 +12,9 @@ public class Algorithm {
     private static double totalFitness;
     
 
-    public static void start(){
+    public static boolean start(){
+        if(!checkSolutionExistence())
+            return false;
         int iterations = 0;
         ArrayList<Schedule> tempSchedules;
         ArrayList<Schedule> offspring;
@@ -28,16 +30,16 @@ public class Algorithm {
 
     //ocena populacji poczatkowej
         calcFitness(Schedules);
-System.out.println(getBestFitness());
+        System.out.println(getBestFitness());
         while(getBestFitness() < 1.0)
         {
-            System.out.println("reproduction()");
+            //System.out.println("reproduction()");
             tempSchedules = reproduction();
-            System.out.println("crossover()");
+            //System.out.println("crossover()");
             tempSchedules = crossover(tempSchedules);
-            System.out.println("mutation()");
+            //System.out.println("mutation()");
             offspring = mutation(tempSchedules);
-            System.out.println("selection()");
+            //System.out.println("selection()");
             selection(offspring);
             Schedules = Elite;
             iterations++;
@@ -46,6 +48,7 @@ System.out.println(getBestFitness());
             System.out.println(iterations);
         }
         Data.setSchedule(selectBest(Schedules));
+        return true;
     }
     
      private static ArrayList<Schedule> reproduction(){
@@ -157,6 +160,21 @@ System.out.println(getBestFitness());
     			}
     		}	
     	}
+        hour = day = group = 0;
+    	for(int i = 0; i < (Data.getDays() ) * (Data.getHours()) * Data.getGroupCount() ; i++){
+    		if(child.getSchedule()[day][hour][group] != null)
+    			child.mutation(child.getSchedule()[day][hour][group], rand, day, hour);
+    		++hour;
+    		if(day == Data.getDays() - 1 && hour == Data.getHours()){
+    			day = 0;
+    			hour = 0;
+    			++group;
+    		}    			
+    		if(hour == Data.getHours()){
+    			hour = 0;
+    			++day;
+    		}
+    	}
 	return child;
     }
     
@@ -188,6 +206,50 @@ System.out.println(getBestFitness());
                     best = s;
         }
         return best;
+    }
+    
+    private static boolean checkSolutionExistence(){
+        if(!checkGroupLessons())
+            return false;
+        if(!checkRoomLessons())
+            return false;
+        if(!checkProfessorLessons())
+            return false;
+        return true;
+    }
+    
+    private static boolean checkGroupLessons(){
+        int check = 0;
+        for(Group g : Data.getGroups()){
+            for(Lesson l : Data.getLessons()){
+                if(l.getGroup().getId().get() == g.getId().get())
+                    check++;
+            }
+        if(check > Data.getDays()*Data.getHours())
+            return false;
+        check =0;
+        }
+        return true;
+    }
+    
+    private static boolean checkRoomLessons(){
+        if(Data.getRooms().size() * Data.getDays() * Data.getHours() < Data.getLessons().size())
+            return false;
+        return true;
+    }
+    
+    private static boolean checkProfessorLessons(){
+        int check = 0;
+        for(Professor p: Data.getProfessors()){
+            for(Lesson l : Data.getLessons()){
+                if(l.getProfessor() == p)
+                    check++;
+            }
+        if(check > Data.getDays()*Data.getHours())
+            return false;
+        check =0;
+        }
+        return true;
     }
     
     private static double getBestFitness(){

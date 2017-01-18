@@ -5,6 +5,7 @@ import java.util.Random;
 public class Schedule {
     private final Lesson[][][] schedule;
     private final boolean[][][] isUsed;
+    private final boolean[] isRoomUsed;
     private double fitness;
     private int softRequirementsValue;
     private final int mutationSize;
@@ -15,6 +16,7 @@ public class Schedule {
     public Schedule(){
         this.schedule = new Lesson[Data.getDays()][Data.getHours()][Data.getGroupCount()];
         this.isUsed = new boolean[Data.getDays()][Data.getHours()][Data.getGroupCount()];
+        this.isRoomUsed = new boolean[Data.getRooms().size()];
         this.mutationSize = 50;
         this.crossoverSize = 3;
         this.mutationProbability = 20;
@@ -56,27 +58,38 @@ public class Schedule {
     
     public void calcFitness(){
         int fitness = 0;
+        int professors = 0;
+        int rooms1 = 0;
+        int rooms2 = 0;
         for(int i = 0; i < Data.getDays(); i++)
             for(int j = 0; j < Data.getHours(); j++){
                 int professor = checkProfessorAvailability(i, j);
                 fitness += professor;
+                professors += professor;
                 //System.out.print("professor = "+professor);
                 int room1 = checkRoomAvailability(i, j);
                 fitness += room1;
-                //System.out.print(" room1 = "+room1);
+                rooms1 += room1;
+                //System.out.print(" room1 = "+room1+"\n");
                 int room2 = checkRoomSize(i, j);
                 fitness += room2;
+                rooms2 += room2;
                 //System.out.print(" room2 = "+room2+"\n");
             }
+        System.out.println("professor = "+professors+" rooms1 = "+rooms1+" rooms2 = "+rooms2);
         this.fitness = (double)fitness / (Data.getDays() * Data.getHours() * 3 );
     }
-    
+
      private int checkProfessorAvailability(int day, int hour){
         int check = 0;
         for(Professor professor : Data.getProfessors()){
             for(int group = 0; group < Data.getGroupCount(); group++){
-                if(getIsUsed()[day][hour][group] && professor == schedule[day][hour][group].getProfessor())
+                if(getIsUsed()[day][hour][group] && professor.getId().get() == schedule[day][hour][group].getProfessor().getId().get())
+                {
                     check++;
+                    if(check>=2)
+                        System.out.println("professor 1 = "+professor.getId().get()+"professor 2 = "+schedule[day][hour][group].getProfessor().getId().get()+"\n");
+                }
             }
             if(check > 1)
                 return 0;
@@ -89,14 +102,16 @@ public class Schedule {
         int check = 0;
         for(Room room : Data.getRooms()){
             for(int group = 0; group < Data.getGroupCount(); group++){
-                if(getIsUsed()[day][hour][group] && room == schedule[day][hour][group].getRoom()){
+                if(getIsUsed()[day][hour][group] && room.getId().get() == schedule[day][hour][group].getRoom().getId().get()){
                     check++;
-                    //System.out.print("room id = "+room.getId().get()+" room2 id = "+schedule[day][hour][group].getRoom().getId().get()+"check = "+check+"\n");
+                    //System.out.print("room id = "+room.getId().get()+" room2 id = "+schedule[day][hour][group].getRoom().getId().get()+" check = "+check+"\n");
                 }
         
             }
-            if(check > 1)
+            if(check > 1){
                 return 0;
+            }
+                
             check = 0;
         }
         return 1;
@@ -153,7 +168,7 @@ public class Schedule {
     }
         
     public void mutation(){
-    	Random rand = new Random();   
+    	/*Random rand = new Random();   
     	if(rand.nextInt(100) < this.mutationProbability){
 	        for(int i = 0; i < this.mutationSize; i++){
 	        	int a = rand.nextInt(Data.getDays());
@@ -179,20 +194,38 @@ public class Schedule {
 		        		isUsed[a][b][k] = false;
 	        	}   
 	        }
-    	}
+    	}*/
     }
     
-    public void mutation(Lesson l, Random rand){
-    	do{
-            //System.out.println("mutation(Lesson, Random)");
-			Room myRoom = Data.getRooms().get(rand.nextInt(Data.getRooms().size()));
-                        //System.out.println("myRoom.id() = "+myRoom.getId().get()+" group.id() = "+l.getGroup().getId().get());
-			if(myRoom.getSize().get() > l.getGroup().getSize().get()){
-				l.setRoom(myRoom);        		
-				break;
-			}
-		} while(true);
-}
+    public void mutation(Lesson l, Random rand, int day, int hour){
+    	Room myRoom = l.getRoom();
+    	for(int i = 0; i < Data.getGroupCount(); i++){
+    		if(this.schedule[day][hour][i] == null || l == this.schedule[day][hour][i]){
+    			continue;
+    		}
+    		else if(myRoom == this.schedule[day][hour][i].getRoom() || myRoom.getSize().get() < l.getGroup().getSize().get()){
+    			i = 0;
+    			myRoom = Data.getRooms().get(rand.nextInt(Data.getRooms().size()));
+    			while(myRoom.getSize().get() < l.getGroup().getSize().get()){
+    				myRoom = Data.getRooms().get(rand.nextInt(Data.getRooms().size()));
+    			}
+    		}	
+    	}
+    	l.setRoom(myRoom);
+    }
+    
+    public void checkUsedRooms(){
+        for(int i = 0; i < isRoomUsed.length; i++)
+            isRoomUsed[i] = false;
+        for(int day = 0; day < Data.getDays(); day++)
+            for(int hour = 0; hour < Data.getHours(); hour++)
+                for(int group = 0; group < Data.getGroupCount(); group++)
+                    isRoomUsed[schedule[day][hour][group].getRoom().getId().get()] = true;
+    }
+    
+    public boolean isRoomUsed(int RoomId){
+        return isRoomUsed[RoomId];
+    }
     
     public Lesson[][][] getSchedule(){
         return schedule;
