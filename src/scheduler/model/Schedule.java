@@ -24,7 +24,7 @@ public class Schedule {
     }
     
     public void generateSchedule(){
-        /*int day;
+        int day;
         int hour;
         Random rand = new Random();
         for(Lesson lesson : Data.getLessons()){
@@ -34,8 +34,8 @@ public class Schedule {
             }while(isUsed[day][hour][lesson.getGroup().getId().get() - 1]);
             schedule[day][hour][lesson.getGroup().getId().get()-1] = lesson;
             isUsed[day][hour][lesson.getGroup().getId().get()-1] = true;
-        }*/
-        int day = 0;
+        }
+        /*int day = 0;
         int hour = 0;
         for(Lesson lesson : Data.getLessons()){
             day = 0;
@@ -51,7 +51,7 @@ public class Schedule {
             }while(isUsed[day][hour][lesson.getGroup().getId().get() - 1]);
             schedule[day][hour][lesson.getGroup().getId().get()-1] = lesson;
             isUsed[day][hour][lesson.getGroup().getId().get()-1] = true;
-        }
+        }*/
     }
     
     public void calcFitness(){
@@ -60,12 +60,58 @@ public class Schedule {
             for(int j = 0; j < Data.getHours(); j++){
                 int professor = checkProfessorAvailability(i, j);
                 fitness += professor;
+                //System.out.print("professor = "+professor);
                 int room1 = checkRoomAvailability(i, j);
                 fitness += room1;
+                //System.out.print(" room1 = "+room1);
                 int room2 = checkRoomSize(i, j);
                 fitness += room2;
+                //System.out.print(" room2 = "+room2+"\n");
             }
-        this.fitness = (double)fitness / (Data.getDays() * Data.getHours() * Data.getGroupCount() * 3 );
+        this.fitness = (double)fitness / (Data.getDays() * Data.getHours() * 3 );
+    }
+    
+     private int checkProfessorAvailability(int day, int hour){
+        int check = 0;
+        for(Professor professor : Data.getProfessors()){
+            for(int group = 0; group < Data.getGroupCount(); group++){
+                if(getIsUsed()[day][hour][group] && professor == schedule[day][hour][group].getProfessor())
+                    check++;
+            }
+            if(check > 1)
+                return 0;
+            check = 0;
+        }
+        return 1;
+    }
+    
+    private int checkRoomAvailability(int day, int hour){
+        int check = 0;
+        for(Room room : Data.getRooms()){
+            for(int group = 0; group < Data.getGroupCount(); group++){
+                if(getIsUsed()[day][hour][group] && room == schedule[day][hour][group].getRoom()){
+                    check++;
+                    //System.out.print("room id = "+room.getId().get()+" room2 id = "+schedule[day][hour][group].getRoom().getId().get()+"check = "+check+"\n");
+                }
+        
+            }
+            if(check > 1)
+                return 0;
+            check = 0;
+        }
+        return 1;
+    }
+    
+    private int checkRoomSize(int day, int hour){
+        int check = 0;
+        for(int group = 0; group < Data.getGroupCount(); group++){
+            //if(schedule[day][hour][group] != null)System.out.print(" group.size() = "+schedule[day][hour][group].getGroup().getSize().get()+" room.size() = "+schedule[day][hour][group].getRoom().getSize().get()+"\n");
+            if(getIsUsed()[day][hour][group] && (schedule[day][hour][group].getGroup().getSize().get() > schedule[day][hour][group].getRoom().getSize().get()))
+            {
+                return 0;
+            }
+        }
+        return 1;
     }
     
     public void calcSoftReqValue(){
@@ -96,44 +142,7 @@ public class Schedule {
         return value;
     }
     
-    private int checkProfessorAvailability(int day, int hour){
-        int fitness = Data.getGroupCount();
-        int check = 0;
-        for(Professor professor : Data.getProfessors()){
-            for(int group = 0; group < Data.getGroupCount(); group++){
-                if(getIsUsed()[day][hour][group] && professor == schedule[day][hour][group].getProfessor())
-                    check++;
-            }
-            if(check > 1)
-                fitness -= check;
-            check = 0;
-        }
-        return fitness;
-    }
-    
-    private int checkRoomAvailability(int day, int hour){
-        int fitness = Data.getGroupCount();
-        int check = 0;
-        for(Room room : Data.getRooms()){
-            for(int group = 0; group < Data.getGroupCount(); group++){
-                if(getIsUsed()[day][hour][group] && room == schedule[day][hour][group].getRoom())
-                    check++;
-            }
-            if(check > 1)
-                fitness -= check;
-            check = 0;
-        }
-        return fitness;
-    }
-    
-    private int checkRoomSize(int day, int hour){
-        int fitness = Data.getGroupCount();
-        int check = 0;
-        for(int group = 0; group < Data.getGroupCount(); group++)
-            if(getIsUsed()[day][hour][group] && (schedule[day][hour][group].getGroup().getSize().get() > schedule[day][hour][group].getRoom().getSize().get()))
-                fitness--;
-        return fitness;
-    }
+   
 
     public double getFitness(){
         return fitness;
@@ -175,7 +184,9 @@ public class Schedule {
     
     public void mutation(Lesson l, Random rand){
     	do{
+            //System.out.println("mutation(Lesson, Random)");
 			Room myRoom = Data.getRooms().get(rand.nextInt(Data.getRooms().size()));
+                        //System.out.println("myRoom.id() = "+myRoom.getId().get()+" group.id() = "+l.getGroup().getId().get());
 			if(myRoom.getSize().get() > l.getGroup().getSize().get()){
 				l.setRoom(myRoom);        		
 				break;

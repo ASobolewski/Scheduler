@@ -3,7 +3,6 @@ package scheduler.model;
 import java.util.ArrayList;
 import java.util.Random;
 
-
 public class Algorithm {
     private static ArrayList<Schedule> Schedules;
     private static ArrayList<Schedule> Elite;
@@ -29,12 +28,16 @@ public class Algorithm {
 
     //ocena populacji poczatkowej
         calcFitness(Schedules);
-
-        while(getBestFitness() < 0.99)
+System.out.println(getBestFitness());
+        while(getBestFitness() < 1.0)
         {
+            System.out.println("reproduction()");
             tempSchedules = reproduction();
+            System.out.println("crossover()");
             tempSchedules = crossover(tempSchedules);
+            System.out.println("mutation()");
             offspring = mutation(tempSchedules);
+            System.out.println("selection()");
             selection(offspring);
             Schedules = Elite;
             iterations++;
@@ -42,7 +45,6 @@ public class Algorithm {
             System.out.println(bestSchedule.getFitness());
             System.out.println(iterations);
         }
-        
         Data.setSchedule(selectBest(Schedules));
     }
     
