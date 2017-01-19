@@ -10,7 +10,7 @@ public class Algorithm {
     private static final int MI = 20;
     private static final int LAMBDA = 10;
     private static double totalFitness;
-    
+    private static boolean b;
 
     public static boolean start(){
         if(!checkSolutionExistence())
@@ -35,17 +35,24 @@ public class Algorithm {
         {
             //System.out.println("reproduction()");
             tempSchedules = reproduction();
+            checkB(tempSchedules);
             //System.out.println("crossover()");
+            if(!b){
             tempSchedules = crossover(tempSchedules);
             //System.out.println("mutation()");
             offspring = mutation(tempSchedules);
             //System.out.println("selection()");
+            }
+            else{
+            offspring = mutationB(tempSchedules);
+            }
             selection(offspring);
             Schedules = Elite;
             iterations++;
             
             System.out.println(bestSchedule.getFitness());
             System.out.println(iterations);
+            System.out.println(b);
         }
         Data.setSchedule(selectBest(Schedules));
         return true;
@@ -74,6 +81,26 @@ public class Algorithm {
         for(Schedule s : sList)
             s.mutation();
         return sList;
+    }
+    
+    public static ArrayList<Schedule> mutationB(ArrayList<Schedule> sList){
+       Random rand = new Random();
+        for(Schedule s : sList)
+            for(int group = 0; group < Data.getGroupCount(); group++)
+                for(int day = 0; day < Data.getDays(); day++)
+                    for(int hour = 0; hour < Data.getHours(); hour++)
+                        if(s.getSchedule()[day][hour][group] != null)
+                            s.mutation(s.getSchedule()[day][hour][group], rand, day, hour);
+        return sList;
+    }
+    
+    private static void checkB(ArrayList<Schedule> sList){
+        for(Schedule s : sList)
+            if(s.b == false){
+                b = false;
+                return;
+            }
+        b = true;
     }
     
     private static void selection(ArrayList<Schedule> sList){
@@ -160,21 +187,7 @@ public class Algorithm {
     			}
     		}	
     	}
-        hour = day = group = 0;
-    	for(int i = 0; i < (Data.getDays() ) * (Data.getHours()) * Data.getGroupCount() ; i++){
-    		if(child.getSchedule()[day][hour][group] != null)
-    			child.mutation(child.getSchedule()[day][hour][group], rand, day, hour);
-    		++hour;
-    		if(day == Data.getDays() - 1 && hour == Data.getHours()){
-    			day = 0;
-    			hour = 0;
-    			++group;
-    		}    			
-    		if(hour == Data.getHours()){
-    			hour = 0;
-    			++day;
-    		}
-    	}
+        
 	return child;
     }
     
@@ -277,4 +290,5 @@ public class Algorithm {
         return bestSchedule;
     }
     
+
 }
