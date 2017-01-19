@@ -1,11 +1,13 @@
 package scheduler.view;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -21,6 +23,7 @@ import scheduler.model.Group;
 import scheduler.model.Lesson;
 import scheduler.model.Professor;
 import scheduler.model.Room;
+import scheduler.util.filewriteUtil;
 
 public class SchedulerController implements Initializable {
     @FXML
@@ -128,14 +131,18 @@ public class SchedulerController implements Initializable {
     private Label fridayLabel6;
     @FXML
     private ChoiceBox<String> groupChoiceBox2;
+    @FXML 
+    private LineChart<Integer, Double> chart;
     
     @FXML
     private Button button;
     
     @FXML
-    private void handleButton(){
+    private void handleButton()throws FileNotFoundException{
     	if(!Algorithm.start())
-            alert.showAndWait();;
+            alert.showAndWait();
+        chart.getData().add(Data.series);
+        filewriteUtil.writeToFile(Data.getSchedule());
     }
     
     Alert alert;
@@ -174,9 +181,8 @@ public class SchedulerController implements Initializable {
             }
         });
         
-        button.setOnAction((event)->{
-            handleButton();
-        });
+        chart.getXAxis().setAutoRanging(true);
+        chart.getYAxis().setAutoRanging(true);
         
         alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
@@ -195,6 +201,9 @@ public class SchedulerController implements Initializable {
         roomTable.setItems(Data.getRooms());
     }
     
+    public void drawChart(){
+        ;
+    }
     //nie pytajcie
     public void setLabels(int group){
         if(Data.getSchedule().getIsUsed()[0][0][group])
