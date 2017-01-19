@@ -2,6 +2,7 @@ package scheduler.model;
 
 import java.util.ArrayList;
 import java.util.Random;
+import javafx.scene.chart.XYChart;
 
 public class Algorithm {
     private static ArrayList<Schedule> Schedules;
@@ -50,6 +51,7 @@ public class Algorithm {
             Schedules = Elite;
             iterations++;
             
+            Data.series.getData().add(new XYChart.Data(iterations, bestSchedule.getFitness()));
             System.out.println(bestSchedule.getFitness());
             System.out.println(iterations);
             System.out.println(b);
@@ -113,12 +115,14 @@ public class Algorithm {
     	Random rand = new Random();
     	int crossoverBegin =  rand.nextInt(Data.getHours() - sch1.getCrossoverSize());
     	int crossoverDay = rand.nextInt(Data.getDays() + 1);
+    	int size = rand.nextInt(Data.getGroupCount());
+    	int crossoverGroup = rand.nextInt(Data.getGroupCount() - size);
     	int day = 0, hour = 0, group = 0;
     	ArrayList<Pair> lessonList = new ArrayList<Pair>();
     	ArrayList<Pair> sch1List = new ArrayList<Pair>();
     	ArrayList<Pair> overWritten = new ArrayList<Pair>();
     	for(int i = 0; i < (Data.getDays() ) * (Data.getHours()) * Data.getGroupCount() ; i++){		
-    		if(day == crossoverDay - 1  && (hour >= crossoverBegin && hour < (crossoverBegin + child.getCrossoverSize()))){	
+    		if(day == crossoverDay - 1  && (hour >= crossoverBegin && hour < (crossoverBegin + child.getCrossoverSize()) && (group >= crossoverGroup && group < (crossoverGroup + size)))){	
     			child.setUsed(day, hour, group, sch2.getIsUsed()[day][hour][group]);
     			child.setSchedule(day, hour, group, sch2.getSchedule()[day][hour][group]);
     			if(child.getSchedule()[day][hour][group] != null){
@@ -204,6 +208,7 @@ public class Algorithm {
         bestSchedule = selectBest(sList);
         for(int i = 0; i < LAMBDA; i++){
             Elite.add(selectBest(sList));
+            sList.remove(selectBest(sList));
         }
     }
     
@@ -289,6 +294,4 @@ public class Algorithm {
     public static Schedule getBestSchedule(){
         return bestSchedule;
     }
-    
-
 }

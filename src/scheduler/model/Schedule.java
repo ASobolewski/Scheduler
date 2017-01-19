@@ -174,7 +174,7 @@ public class Schedule {
     }
         
     public void mutation(){
-    	/*Random rand = new Random();   
+    	Random rand = new Random();   
     	if(rand.nextInt(100) < this.mutationProbability){
 	        for(int i = 0; i < this.mutationSize; i++){
 	        	int a = rand.nextInt(Data.getDays());
@@ -200,12 +200,11 @@ public class Schedule {
 		        		isUsed[a][b][k] = false;
 	        	}   
 	        }
-    	}*/
+    	}
     }
     
     public void mutation(Lesson l, Random rand, int day, int hour){
     	int id = Data.getRooms().get(rand.nextInt(10)).getId().get();
-    	boolean flag = true;
     	if(this.isRoomUsed(day, hour, id) == false && l.getGroup().getSize().get() <= Data.getRooms().get(id - 1).getSize().get()){
     		this.setRoomUsed(day, hour, id - 1, true);
     		l.setRoom(Data.getRooms().get(id - 1));

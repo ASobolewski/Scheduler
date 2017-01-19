@@ -1,8 +1,8 @@
 package scheduler.model;
 
-import java.util.Arrays;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 import scheduler.util.filereadUtil;
 
 
@@ -14,7 +14,8 @@ public class Data {
     private static final ObservableList<Room> Rooms = FXCollections.observableArrayList();
     private static Schedule schedule;
     private static int groupCount;
-
+    public  static XYChart.Series series = new XYChart.Series();
+    
     private static final int DAYS = 5;
     private static final int HOURS = 6; 
     
