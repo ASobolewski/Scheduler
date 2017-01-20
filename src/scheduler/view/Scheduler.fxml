@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -16,19 +21,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.view.SchedulerController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.view.SchedulerController">
    <children>
       <TabPane layoutX="90.0" layoutY="-6.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab text="Run">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Button layoutX="245.0" layoutY="141.0" mnemonicParsing="false" text="Run" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
             <Tab text="Data">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -155,7 +151,7 @@
                            <children>
                               <Label alignment="TOP_LEFT" contentDisplay="CENTER" text="Monday" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font size="9.0" />
+                                    <Font name="System Bold" size="13.0" />
                                  </font></Label>
                               <Label fx:id="mondayLabel2" alignment="TOP_LEFT" contentDisplay="CENTER" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                  <font>
@@ -179,7 +175,7 @@
                                  </font></Label>
                               <Label alignment="TOP_LEFT" contentDisplay="CENTER" text="Tuesday" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font size="9.0" />
+                                    <Font name="System Bold" size="13.0" />
                                  </font></Label>
                               <Label fx:id="tuesdayLabel1" alignment="TOP_LEFT" contentDisplay="CENTER" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <font>
@@ -207,7 +203,7 @@
                                  </font></Label>
                               <Label alignment="TOP_LEFT" contentDisplay="CENTER" text="Wenesday" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font size="9.0" />
+                                    <Font name="System Bold" size="13.0" />
                                  </font></Label>
                               <Label fx:id="wenesdayLabel1" alignment="TOP_LEFT" contentDisplay="CENTER" text="Label" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <font>
@@ -235,7 +231,7 @@
                                  </font></Label>
                               <Label alignment="TOP_LEFT" contentDisplay="CENTER" text="Thursday" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font size="9.0" />
+                                    <Font name="System Bold" size="13.0" />
                                  </font></Label>
                               <Label fx:id="thursdayLabel1" alignment="TOP_LEFT" contentDisplay="CENTER" text="Label" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <font>
@@ -263,7 +259,7 @@
                                  </font></Label>
                               <Label alignment="TOP_LEFT" contentDisplay="CENTER" text="Friday" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font size="9.0" />
+                                    <Font name="System Bold" size="13.0" />
                                  </font></Label>
                               <Label fx:id="fridayLabel1" alignment="TOP_LEFT" contentDisplay="CENTER" text="Label" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <font>
@@ -298,7 +294,7 @@
                         </GridPane>
                         <ChoiceBox fx:id="groupChoiceBox2" layoutX="225.0" layoutY="14.0" prefWidth="150.0" />
                         <Label layoutX="161.0" layoutY="19.0" text="Group" />
-                        <Button fx:id="button" layoutX="419.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleButton" text="Button" />
+                        <Button fx:id="button" layoutX="419.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleButton" text="Make Schedule" />
                      </children>
                   </AnchorPane>
               </content>
